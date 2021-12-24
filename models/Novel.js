@@ -11,7 +11,7 @@ const NovelSchema = new Schema({
         type: String,
         required: true,
     },
-    thumnail:{
+    thumbnail:{
         type: String,
         required: true,
     },

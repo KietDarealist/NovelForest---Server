@@ -5,6 +5,7 @@ const argon2 = require("argon2");
 const jwt = require("jsonwebtoken");
 
 const sendEmail  = require("../config/sendMail");
+const verifyToken = require("../middleware/verifyToken");
 
 
 
@@ -49,7 +50,7 @@ router.post('/register', async(req,res)=>{
             },
             process.env.ACCESS_TOKEN_SECRET
         );
-        res.json({success: true, user: newUser, message: "Register succesfully, please confirm your email"});
+        res.json({success: true, user: newUser, accessToken: accessToken, message: "Register succesfully, please confirm your email"});
         await sendEmail(account, accessToken);
     } catch (error) {
         console.log(error);
@@ -87,5 +88,18 @@ router.get("/verify/:id", async(req,res)=>{
     }
 })
 
+
+router.get("/", verifyToken, async(req,res)=>{
+    try {
+        const user = await User.findById(req.userId).select("-password");
+        if (!user){
+            return res.status(400).json({success: false, message: "User not found"});
+        }
+        return res.json({sucess: true, user:user});
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({success: false, message: "Internal Server Error"});
+    }
+})
 
 module.exports = router;
