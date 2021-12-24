@@ -15,8 +15,31 @@ const verifyToken = require("../middleware/verifyToken");
 
 //Route Post api/auth/login
 //Description: Login user
-//Access Public
+// //Access Public
+// "name":"bao gia",
+//         "account":"knabao7a7@gmail.com",
+//         "password" : "abcdef"
 
+router.post('/login',async (req,res)=> { 
+    const {account,password} = req.body
+    try{
+
+        const user = await User.findOne({account : account})
+        
+        if (!user)
+        res.status(400).json({success:false, message : "Email doesnt exit"})
+        else{
+            const comparePassword =  await argon2.verify(user.password,password)
+            if (!comparePassword)
+                res.status(400).json({success: false,message : "Wrong password"})
+        }
+        //success
+        res.status(200).json({success : true, message : "Successfully"})
+    }
+    catch(err){
+        res.status(500).json(err)
+    }
+})
 //Route Put api/auth
 //Description: Modify user's information
 //Access: private
