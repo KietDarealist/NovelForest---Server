@@ -11,6 +11,14 @@ const NovelSchema = new Schema({
         type: String,
         required: true,
     },
+    thumnail:{
+        type: String,
+        required: true,
+    },
+    images:{
+        type: [String],
+        required: false,
+    },
     chapters: {
         type: [{key: Number, title: String}],
     },
