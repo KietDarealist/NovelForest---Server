@@ -4,8 +4,6 @@ const mongoose = require("mongoose");
 const authRouter = require("./routes/auth");
 const cors = require("cors");
 
-
-
 const connectDB = async () => {
     try {
         await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.lscsy.mongodb.net/novelforest?retryWrites=true&w=majority`, (err)=> {
@@ -19,7 +17,7 @@ const connectDB = async () => {
     }
 }
 
-connectDB();
+connectDB()
 
 
 const app = express();
